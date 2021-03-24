@@ -6,8 +6,8 @@ const GifExpertApp = () => {
   //   const categories = ["One Punch", "Samurai X", "X Japan"];
   const [categories, setCategories] = useState([
     "One Punch",
-    "Samurai X",
-    "X Japan",
+    // "Samurai X",
+    // "X Japan",
   ]);
 
   //   const handleAdd = () => {
@@ -20,7 +20,6 @@ const GifExpertApp = () => {
       <AddCategory setCategories={setCategories} />
       <hr />
       {/* <button onClick={handleAdd}>Agregar</button> */}
-
       {categories.map((category, i) => (
         <GifGrid key={i} category={category} />
       ))}
