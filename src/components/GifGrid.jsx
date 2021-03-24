@@ -1,35 +1,27 @@
-import React, {useState, useEffect} from 'react'
-import { GifGridItem } from './GifGridItem';
+import React, { useState, useEffect } from "react";
+import getGifs from "../helpers/getGifs";
+import { useFetchGifs } from "../hooks/useFetchGitfs";
+import { GifGridItem } from "./GifGridItem";
 
+export const GifGrid = ({ category }) => {
+  const [images, setImages] = useState([]);
 
-export const GifGrid = ({category}) => {
+  useEffect(() => {
+    getGifs(category).then(setImages);
+  }, [category]);
 
-    const [images, setImages] = useState([]);
+  const { data, loading } = useFetchGifs();
 
-    useEffect(()=>{
-     getGifs();
-    }, []);
+  return (
+    <>
+      <h3>{category}</h3>
+      {loading ? "Cargando..." : "Data Cargada"}
 
-    const getGifs = async () => {
-        const url = "http://api.giphy.com/v1/gifs/search?limit=20&q=worldofwarcraft&api_key=rIi9ma7bAf1k6IBrO2AyxS4UpXyAf07F";
-        const resp = await fetch(url);
-        const {data} = await resp.json();
-        const gifs = data.map(img => {
-            return {
-                id: img.id,
-                title: img.title,
-                url: img.images?.fixed_height_downsampled.url
-            }
-        });
-        setImages(gifs);
-    }
-
-    return (
-        <div className="grid-gifs">
-            {/* <h3>{category}</h3> */}
-            {images.map((image, i) =>
-                <GifGridItem key={i}{...image} />                     
-            )}
-        </div>
-    )
-}
+      <div className="grid-gifs">
+        {images.map((image, i) => (
+          <GifGridItem key={i} {...image} />
+        ))}
+      </div>
+    </>
+  );
+};
